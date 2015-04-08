@@ -164,7 +164,10 @@ module Tp2h15 : TP2H15 = struct
 	else raise (failwith "Le systeme d'activites ne contient pas cette activite")
 
       (* afficher_systeme_activites : unit *)
-      (*method afficher_systeme_activites = *)
+      method afficher_systeme_activites =
+        match liste_activites with
+	| [] -> failwith "Le systeme d'activites est vide"
+        | _ -> iter (fun x -> x#afficher_activite) liste_activites
 
       (* lire_fichier : in_channel -> string -> string list list *)
       method lire_fichier (flux:in_channel) (separateur:string) =
