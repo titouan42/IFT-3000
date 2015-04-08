@@ -193,13 +193,13 @@ module Tp2h15 : TP2H15 = struct
       method lister_arrondissements =
 	match liste_activites with
 	| [] -> failwith "Le systeme d'activites est vide"
-	| _  -> List.uniques (List.map (fun x -> x#get_arrondissement) liste_activites)
+	| _  -> uniques (List.map (fun x -> x#get_arrondissement) liste_activites)
 
       (* lister_types_activites : string list *)
       method lister_types_activites =
 	match liste_activites with
         | [] -> failwith "Le systeme d'activites est vide"
-        | _  -> List.uniques (List.map (fun x -> x#get_description_nat) liste_activites)
+        | _  -> uniques (List.map (fun x -> x#get_description_nat) liste_activites)
     end
 
   class sysactivites_gratuites (au:string) (od:string) =
@@ -218,7 +218,7 @@ module Tp2h15 : TP2H15 = struct
       method charger_donnees_sysactivites (fichier:string) =
 	match (self#lire_fichier (open_in fichier) "|") with
 	| [] -> ()
-	| liste::reste -> ajouter_liste_activites reste
+	| liste::reste -> self#ajouter_liste_activites reste
 
       (* trier_activites : int -> unit *)
       (*method trier_activites (ordre:int) =*)
