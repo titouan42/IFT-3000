@@ -154,12 +154,14 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
       
       (* ajouter_activite : activite -> unit *)
-      method ajouter_activite (a:activite) = if self#activite_existe a
-					     then ()
-					     else self#set_liste_activites (self#get_liste_activites @ [a])
+      method ajouter_activite (a:activite) = 
+	if self#activite_existe a then ()
+	else self#set_liste_activites (self#get_liste_activites @ [a])
 
       (* supprimer_activite : activite -> unit *)
-      (*method supprimer_activite (a:activite) = *)
+      method supprimer_activite (a:activite) =
+	if self#activite_existe a then self#set_liste_activites (enlever a self#get_liste_activites)
+	else raise (failwith "Le systeme d'activites ne contient pas cette activite")
 
       (* afficher_systeme_activites : unit *)
       (*method afficher_systeme_activites = 
