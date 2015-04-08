@@ -187,12 +187,17 @@ module Tp2h15 : TP2H15 = struct
 	| [] -> failwith "Le systeme d'activites est vide"
         | _  -> List.iter (fun x -> x#afficher_activite) liste_activites
 
-      (* lire_fichier : in_channel -> string -> string list list *)
       method lire_fichier (flux:in_channel) (separateur:string) =
 	let rec lire_fichier_aux (flux:in_channel) (separateur:string) =
-	  try let l = (decouper_chaine (String.trim (input_line flux)) separateur)
-	      in l::lire_fichier_aux flux separateur
-	  with  End_of_file -> []
+	  let read_line ic =
+	    try
+	      input_line ic (* Lire la ligne sans le retour de chariot *)
+	    with End_of_file -> "" 
+	  in
+	  let ligne = read_line flux in
+	  match ligne with
+	  | "" -> []
+	  | s -> (decouper_chaine s separateur)::(lire_fichier_aux flux separateur)
 	in lire_fichier_aux flux separateur
 
       (* trouver_selon_arrondissement : string -> activite list *)
