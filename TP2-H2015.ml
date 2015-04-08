@@ -169,7 +169,7 @@ module Tp2h15 : TP2H15 = struct
 	   | 1 ->  comparer_date o1#get_date_deb o1#get_heure_deb o2#get_date_deb o2#get_heure_deb
 	   | 2 ->  comparer_date o1#get_date_fin o1#get_heure_fin o2#get_date_fin o2#get_heure_fin
 	   | 3 ->  compare_value o1#get_tarif_base o2#get_tarif_base
-	   | _ -> raise (failwith "Invalid compare type")
+	   | _ -> failwith "Invalid compare type"
 			
       (* ajouter_activite : activite -> unit *)
       method ajouter_activite (a:activite) =
@@ -179,7 +179,7 @@ module Tp2h15 : TP2H15 = struct
       (* supprimer_activite : activite -> unit *)
       method supprimer_activite (a:activite) =
 	if self#activite_existe a then liste_activites <- (enlever a liste_activites)
-	else raise (failwith "Le systeme d'activites ne contient pas cette activite")
+	else failwith "Le systeme d'activites ne contient pas cette activite"
 
       (* afficher_systeme_activites : unit *)
       method afficher_systeme_activites =
@@ -198,13 +198,13 @@ module Tp2h15 : TP2H15 = struct
       (* trouver_selon_arrondissement : string -> activite list *)
       method trouver_selon_arrondissement (na:string) =
 	match liste_activites with
-	| [] -> raise (failwith "Le systeme d'activites est vide")
+	| [] -> failwith "Le systeme d'activites est vide"
 	| _  -> List.filter (fun x -> x#get_arrondissement = na) liste_activites
 
       (* trouver_selon_type : string -> activite list *)
       method trouver_selon_type (ta:string) =
 	match liste_activites with
-	| [] -> raise (failwith "Le systeme d'activites est vide")
+	| [] -> failwith "Le systeme d'activites est vide"
 	| _  ->  List.filter(fun x -> x#get_description_nat = ta) liste_activites
 
       (* lister_arrondissements : string list *)
@@ -242,10 +242,10 @@ module Tp2h15 : TP2H15 = struct
       method trier_activites (ordre:int) =
 	try 
 	  match ordre with
-	  | 3 -> raise (failwith "Invalid compare type")  
+	  | 3 -> failwith "Invalid compare type"
 	  | _ -> self#set_liste_activites (List.sort (fun o1 o2 -> self#comparer_activites o1 o2 ordre)
 						     self#get_liste_activites)
-	with _ -> raise (failwith "trier_activites: ordre incorrect!")
+	with _ -> failwith "trier_activites: ordre incorrect!"
 			
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
@@ -275,7 +275,7 @@ module Tp2h15 : TP2H15 = struct
 	try 
 	  self#set_liste_activites (List.sort (fun o1 o2 -> self#comparer_activites o1 o2 ordre)
 					      self#get_liste_activites)
-	with _ -> raise (failwith "trier_activites: ordre incorrect!")
+	with _ -> failwith "trier_activites: ordre incorrect!"
 
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
@@ -292,7 +292,7 @@ module Tp2h15 : TP2H15 = struct
       (* sauvegarder_liste_activites : activite list -> out_channel -> unit *)
       method sauvegarder_liste_activites (la:activite list) (flux:out_channel) =
         match la with
-        | [] -> raise (failwith "Le systeme d'activites est vide")
+        | [] -> failwith "Le systeme d'activites est vide"
 	| _  ->
         iter (fun x ->
           begin
