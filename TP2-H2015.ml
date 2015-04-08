@@ -139,7 +139,7 @@ module Tp2h15 : TP2H15 = struct
 	  print_endline ("Heures: " ^ self#get_heure_deb ^ " a " ^ self#get_heure_fin ^ ".");
 	  if (type_activite == false)
 	  then print_endline ("Prix de l'activite: " ^ string_of_float self#get_tarif_base ^"$\n")
-	  else print_endline
+	  else print_endline ""
 	end
 
     end
