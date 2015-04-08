@@ -167,7 +167,7 @@ module Tp2h15 : TP2H15 = struct
       method afficher_systeme_activites =
         match liste_activites with
 	| [] -> failwith "Le systeme d'activites est vide"
-        | _  -> iter (fun x -> x#afficher_activite) liste_activites
+        | _  -> List.iter (fun x -> x#afficher_activite) liste_activites
 
       (* lire_fichier : in_channel -> string -> string list list *)
       method lire_fichier (flux:in_channel) (separateur:string) =
@@ -191,13 +191,13 @@ module Tp2h15 : TP2H15 = struct
       method lister_arrondissements =
 	match liste_activites with
 	| [] -> failwith "Le systeme d'activites est vide" 
-	| _  -> uniques (map (fun x -> x#get_arrondissement) liste_activites)
-	  
+	| _  -> List.uniques (List.map (fun x -> x#get_arrondissement) liste_activites)
+
       (* lister_types_activites : string list *)
       method lister_types_activites =
 	match liste_activites with
         | [] -> failwith "Le systeme d'activites est vide"
-        | _  -> uniques (map (fun x -> x#get_description_nat) liste_activites)
+        | _  -> List.uniques (List.map (fun x -> x#get_description_nat) liste_activites)
 
     end
 
@@ -210,13 +210,16 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      (*method ajouter_liste_activites (lla:string list list) =
+      method ajouter_liste_activites (lla:string list list) =
 
       (* charger_donnees_sysactivites : string -> unit *)
       method charger_donnees_sysactivites (fichier:string) =
+	match (self#lire_fichier (open_in fichier) "|") with
+	| [] -> ()
+	| liste::reste -> ajouter_liste_activites reste
 
       (* trier_activites : int -> unit *)
-      method trier_activites (ordre:int) =*)
+      (*method trier_activites (ordre:int) =*)
 
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^ 
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
