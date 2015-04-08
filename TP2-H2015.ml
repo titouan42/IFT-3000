@@ -128,7 +128,16 @@ module Tp2h15 : TP2H15 = struct
       (* Méthode à implanter *)
       
       (* afficher_activite : unit *)
-      method afficher_activite = 
+      method afficher_activite = begin
+	  print_endline ("Description: " ^ self#get_description ^ ".");
+	  print_endline ("Type: " ^ self#get_description_nat ^ ".");
+	  print_endline ("Lieu: " ^ self#get_lieu_1 ^ ".");
+	  print_endline ("Adresse: " ^ self#get_adresse ^ ".");
+	  print_endline ("Arrondissement: " ^ self#get_arrondissement ^ ".");
+	  print_endline ("Dates: " ^ self#get_date_deb ^ " au " ^ self#get_date_fin ^ ".");
+	  print_endline ("Jour de la semaine: " ^ self#get_jour_semaine ^ ".");
+	  print_endline ("Heures: " ^ self#get_heure_deb ^ " a " ^ self#get_heure_fin ^ ".\n");
+	end
 
     end
 
@@ -145,7 +154,7 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
       
       (* ajouter_activite : activite -> unit *)
-      method ajouter_activite (a:activite) =
+      (*method ajouter_activite (a:activite) =
 
       (* supprimer_activite : activite -> unit *)
       method supprimer_activite (a:activite) = 
@@ -166,7 +175,7 @@ module Tp2h15 : TP2H15 = struct
       method lister_arrondissements =
       
       (* lister_types_activites : string list *)
-      method lister_types_activites =
+      method lister_types_activites =*)
 
     end
 
@@ -179,13 +188,13 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      method ajouter_liste_activites (lla:string list list) =
+      (*method ajouter_liste_activites (lla:string list list) =
 
       (* charger_donnees_sysactivites : string -> unit *)
       method charger_donnees_sysactivites (fichier:string) =
 
       (* trier_activites : int -> unit *)
-      method trier_activites (ordre:int) =
+      method trier_activites (ordre:int) =*)
 
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^ 
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
@@ -201,13 +210,13 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      method ajouter_liste_activites (lla:string list list) =
+      (*method ajouter_liste_activites (lla:string list list) =
 
       (* charger_donnees_sysactivites : string -> unit *)
       method charger_donnees_sysactivites (fichier:string) =
 
       (* trier_activites : int -> unit *)
-      method trier_activites (ordre:int) = 
+      method trier_activites (ordre:int) = *)
  
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^ 
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
@@ -222,10 +231,10 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* sauvegarder_liste_activites : activite list -> out_channel -> unit *)      
-      method sauvegarder_liste_activites (la:activite list) (flux:out_channel) =
+      (*method sauvegarder_liste_activites (la:activite list) (flux:out_channel) =*)
 
       (* lancer_systeme_activites : unit *) 
-      method lancer_systeme_activites =
+      method lancer_systeme_activites = ()
 
       initializer self#lancer_systeme_activites
 
