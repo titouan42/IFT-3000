@@ -153,6 +153,13 @@ module Tp2h15 : TP2H15 = struct
 
       (* Méthodes à implanter *)
 
+      method private compare (o1: activite) (o2: activite) (t: int) = 
+	match t with
+	| 1 ->  o1#get_date_fin < o2#get_date_deb && o1#get_heure_deb < o2#get_heure_deb 
+	| 2 ->  o1#get_date_fin < o2#get_date_fin && o1#get_heure_fin < o2#get_heure_fin 
+	| 3 ->  o1#get_tarif_base < o2#get_tarif_base
+	| _ -> raise (failwith "Invalid compare type")
+
       (* ajouter_activite : activite -> unit *)
       method ajouter_activite (a:activite) =
 	if self#activite_existe a then ()
@@ -221,8 +228,14 @@ module Tp2h15 : TP2H15 = struct
 	| liste::reste -> self#ajouter_liste_activites reste
 
       (* trier_activites : int -> unit *)
-      (*method trier_activites (ordre:int) =*)
-
+      method trier_activites (ordre:int) =
+	try 
+	  match ordre with
+	  | 3 -> raise (failwith "Invalid compare type")  
+	  | _ -> self#set_liste_activites (List.sort (fun o1 o2 -> if self#compare o1 o2 ordre then 0
+								   else -1) self#get_liste_activites)
+	with _ -> raise (failwith "trier_activites: ordre incorrect!")
+			
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
 				print_newline()
@@ -241,10 +254,14 @@ module Tp2h15 : TP2H15 = struct
 	List.iter (fun x -> self#ajouter_activite (new activite x false)) lla;
 
       (* charger_donnees_sysactivites : string -> unit *)
-      (*method charger_donnees_sysactivites (fichier:string) =
+      (*method charger_donnees_sysactivites (fichier:string) =*)
 
       (* trier_activites : int -> unit *)
-      method trier_activites (ordre:int) = *)
+      method trier_activites (ordre:int) =
+	try 
+	  self#set_liste_activites (List.sort (fun o1 o2 -> if self#compare o1 o2 ordre then 0
+							    else -1) self#get_liste_activites)
+	with _ -> raise (failwith "trier_activites: ordre incorrect!")
 
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
