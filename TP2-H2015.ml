@@ -156,11 +156,11 @@ module Tp2h15 : TP2H15 = struct
       (* ajouter_activite : activite -> unit *)
       method ajouter_activite (a:activite) = 
 	if self#activite_existe a then ()
-	else self#set_liste_activites (self#get_liste_activites @ [a])
+	else liste_activites <- (liste_activites @ [a])
 
       (* supprimer_activite : activite -> unit *)
       method supprimer_activite (a:activite) =
-	if self#activite_existe a then self#set_liste_activites (enlever a self#get_liste_activites)
+	if self#activite_existe a then liste_activites <- (enlever a liste_activites)
 	else raise (failwith "Le systeme d'activites ne contient pas cette activite")
 
       (* afficher_systeme_activites : unit *)
@@ -175,10 +175,10 @@ module Tp2h15 : TP2H15 = struct
 	in lire_fichier_aux flux separateur
 
       (* trouver_selon_arrondissement : string -> activite list *)
-      (*method trouver_selon_arrondissement (na:string) =
+      (*method trouver_selon_arrondissement (na:string) = match *)
 
       (* trouver_selon_type : string -> activite list *)
-      method trouver_selon_type (ta:string) = 
+      (*method trouver_selon_type (ta:string) = 
 
       (* lister_arrondissements : string list *)
       method lister_arrondissements =
