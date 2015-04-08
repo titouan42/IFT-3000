@@ -185,10 +185,10 @@ module Tp2h15 : TP2H15 = struct
 	| _  ->  List.filter(fun x -> x#get_description_nat = ta) liste_activites
 
       (* lister_arrondissements : string list *)
-      (*method lister_arrondissements =
+      (*method lister_arrondissements = 
       
       (* lister_types_activites : string list *)
-      method lister_types_activites =*)
+      (*method lister_types_activites =*)
 
     end
 
