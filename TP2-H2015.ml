@@ -169,7 +169,7 @@ module Tp2h15 : TP2H15 = struct
 	   | 1 ->  comparer_date o1#get_date_deb o1#get_heure_deb o2#get_date_deb o2#get_heure_deb
 	   | 2 ->  comparer_date o1#get_date_fin o1#get_heure_fin o2#get_date_fin o2#get_heure_fin
 	   | 3 ->  compare_value o1#get_tarif_base o2#get_tarif_base
-	   | _ -> failwith "Invalid compare type"
+	   | _ ->  -3
 			
       (* ajouter_activite : activite -> unit *)
       method ajouter_activite (a:activite) =
@@ -240,13 +240,11 @@ module Tp2h15 : TP2H15 = struct
 
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) =
-	try 
-	  match ordre with
-	  | 3 -> failwith "Invalid compare type"
-	  | _ -> self#set_liste_activites (List.sort (fun o1 o2 -> self#comparer_activites o1 o2 ordre)
-						     self#get_liste_activites)
-	with _ -> failwith "trier_activites: ordre incorrect!"
-			
+	let compare (o1:activite) (o2:activite) = self#comparer_activites o1 o2 ordre
+	in if ordre >= 1 && ordre <= 2
+	   then self#set_liste_activites (List.sort compare self#get_liste_activites)
+	   else failwith "trier_activites: ordre incorrect!"
+					   
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
 				print_newline()
@@ -272,10 +270,10 @@ module Tp2h15 : TP2H15 = struct
 						       
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) =
-	try 
-	  self#set_liste_activites (List.sort (fun o1 o2 -> self#comparer_activites o1 o2 ordre)
-					      self#get_liste_activites)
-	with _ -> failwith "trier_activites: ordre incorrect!"
+	let compare (o1:activite) (o2:activite) = self#comparer_activites o1 o2 ordre
+	in if ordre >= 1 && ordre <= 2
+	   then self#set_liste_activites (List.sort compare self#get_liste_activites)
+	   else failwith "trier_activites: ordre incorrect!"
 
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
