@@ -164,13 +164,18 @@ module Tp2h15 : TP2H15 = struct
 	else raise (failwith "Le systeme d'activites ne contient pas cette activite")
 
       (* afficher_systeme_activites : unit *)
-      (*method afficher_systeme_activites = 
+      (*method afficher_systeme_activites = *)
 
       (* lire_fichier : in_channel -> string -> string list list *)
       method lire_fichier (flux:in_channel) (separateur:string) =
+	let rec lire_fichier_aux (flux:in_channel) (separateur:string) =
+	  try let l = (decouper_chaine (String.trim (input_line flux)) separateur)
+	      in l::lire_fichier_aux flux separateur
+	  with  End_of_file -> []
+	in lire_fichier_aux flux separateur
 
       (* trouver_selon_arrondissement : string -> activite list *)
-      method trouver_selon_arrondissement (na:string) =
+      (*method trouver_selon_arrondissement (na:string) =
 
       (* trouver_selon_type : string -> activite list *)
       method trouver_selon_type (ta:string) = 
