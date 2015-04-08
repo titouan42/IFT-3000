@@ -153,13 +153,21 @@ module Tp2h15 : TP2H15 = struct
 
       (* Méthodes à implanter *)
 
-      method private compare (o1: activite) (o2: activite) (t: int) = 
-	match t with
-	| 1 ->  o1#get_date_fin < o2#get_date_deb && o1#get_heure_deb < o2#get_heure_deb 
-	| 2 ->  o1#get_date_fin < o2#get_date_fin && o1#get_heure_fin < o2#get_heure_fin 
-	| 3 ->  o1#get_tarif_base < o2#get_tarif_base
-	| _ -> raise (failwith "Invalid compare type")
-
+      method private comparer_activites (o1: activite) (o2: activite) (t: int) =
+	let compare_value (v1:float) (v2: float) =
+	if v1 < v2 then -1
+	else if v1 > v2 then 1
+	else 0 in
+	let comparer_date (o1Date: string) (o1Heure:string ) (o2Date: string) (o2Heure: string) =
+	  let d1 = retourner_epoque_secondes o1Date "-" o1Heure ":" in
+          let d2 = retourner_epoque_secondes o2Date "-" o2Heure ":" in 
+	  compare_value d1 d2
+	in match t with
+	   | 1 ->  comparer_date o1#get_date_deb o1#get_heure_deb o2#get_date_deb o2#get_heure_deb
+	   | 2 ->  comparer_date o1#get_date_fin o1#get_heure_fin o2#get_date_fin o2#get_heure_fin
+	   | 3 ->  compare_value o1#get_tarif_base o2#get_tarif_base
+	   | _ -> raise (failwith "Invalid compare type")
+			
       (* ajouter_activite : activite -> unit *)
       method ajouter_activite (a:activite) =
 	if self#activite_existe a then ()
@@ -232,8 +240,8 @@ module Tp2h15 : TP2H15 = struct
 	try 
 	  match ordre with
 	  | 3 -> raise (failwith "Invalid compare type")  
-	  | _ -> self#set_liste_activites (List.sort (fun o1 o2 -> if self#compare o1 o2 ordre then 0
-								   else -1) self#get_liste_activites)
+	  | _ -> self#set_liste_activites (List.sort (fun o1 o2 -> self#comparer_activites o1 o2 ordre)
+						     self#get_liste_activites)
 	with _ -> raise (failwith "trier_activites: ordre incorrect!")
 			
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
@@ -262,8 +270,8 @@ module Tp2h15 : TP2H15 = struct
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) =
 	try 
-	  self#set_liste_activites (List.sort (fun o1 o2 -> if self#compare o1 o2 ordre then 0
-							    else -1) self#get_liste_activites)
+	  self#set_liste_activites (List.sort (fun o1 o2 -> self#comparer_activites o1 o2 ordre)
+					      self#get_liste_activites)
 	with _ -> raise (failwith "trier_activites: ordre incorrect!")
 
       initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
@@ -279,7 +287,7 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* sauvegarder_liste_activites : activite list -> out_channel -> unit *)
-      (*method sauvegarder_liste_activites (la:activite list) (flux:out_channel) =*)
+      method sauvegarder_liste_activites (la:activite list) (flux:out_channel) = ()
 
       (* lancer_systeme_activites : unit *)
       method lancer_systeme_activites = ()
