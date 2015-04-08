@@ -290,7 +290,26 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* sauvegarder_liste_activites : activite list -> out_channel -> unit *)
-      method sauvegarder_liste_activites (la:activite list) (flux:out_channel) = ()
+      method sauvegarder_liste_activites (la:activite list) (flux:out_channel) =
+        match la with
+        | [] -> raise (failwith "Le systeme d'activites est vide")
+	| _  ->
+        iter (fun x ->
+          begin
+            output_string flux ("Description: " ^ x#get_description ^ ".");
+            output_string flux ("Type: " ^ x#get_description_nat ^ ".");
+            output_string flux ("Lieu: " ^ x#get_lieu_1 ^ ".");
+            output_string flux ("Adresse: " ^ x#get_adresse ^ ".");
+            output_string flux ("Arrondissement: " ^ x#get_arrondissement ^ ".");
+            output_string flux ("Dates: " ^ x#get_date_deb ^ " au " ^ x#get_date_fin ^ ".");
+            output_string flux ("Jour de la semaine: " ^ x#get_jour_semaine ^ ".");
+            output_string flux ("Heures: " ^ x#get_heure_deb ^ " a " ^ x#get_heure_fin ^ ".\n");
+            if (x#get_type_activite == false) then
+              output_string flux ("Prix de l'activite:" ^ string_of_float(x#get_tarif_base) ^ ".\n");
+            output_string flux ("\n");
+          end
+        ) la
+
 
       (* lancer_systeme_activites : unit *)
       method lancer_systeme_activites = ()
