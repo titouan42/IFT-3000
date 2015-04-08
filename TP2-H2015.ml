@@ -136,7 +136,7 @@ module Tp2h15 : TP2H15 = struct
 	  print_endline ("Arrondissement: " ^ self#get_arrondissement ^ ".");
 	  print_endline ("Dates: " ^ self#get_date_deb ^ " au " ^ self#get_date_fin ^ ".");
 	  print_endline ("Jour de la semaine: " ^ self#get_jour_semaine ^ ".");
-	  print_endline ("Heures: " ^ self#get_heure_deb ^ " a " ^ self#get_heure_fin ^ ".\n");
+	  print_endline ("Heures: " ^ self#get_heure_deb ^ " a " ^ self#get_heure_fin ^ ".");
 	  if (type_activite == false)
 	  then print_endline ("Prix de l'activite: " ^ string_of_float self#get_tarif_base ^"$\n")
 	end
