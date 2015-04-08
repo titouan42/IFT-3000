@@ -312,7 +312,19 @@ module Tp2h15 : TP2H15 = struct
 
 
       (* lancer_systeme_activites : unit *)
-      method lancer_systeme_activites = ()
+      method lancer_systeme_activites = 
+	print_string "Bienvenue a l'outil de recherche du Centre de Losirs de Quebec\n";
+	print_string "Quel type d'activites vous interessent?\n";
+	print_string "1- Activites gratuites.\n2- Activites payantes.\n";
+	print_string "Veuillez choisir une option (1 ou 2):?";
+	flush stdout;
+	let choix = int_of_string (input_line stdin) in
+	if (choix != 1 && choix != 2) then failwith "Nombre incorrect, veuillez recommencer!";
+	let filename = if choix = 1 then nom_fichier_agratuites else nom_fichier_payant in
+
+	print_string "Recherche dans un systeme d'activites gratuites utilisant les donnees ouvertes de la ville de Quebec.\n";
+	print_string "Quel type (nature) d'activites vous interessent?\n";
+	
 
       initializer self#lancer_systeme_activites
 
