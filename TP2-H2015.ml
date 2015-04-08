@@ -178,12 +178,14 @@ module Tp2h15 : TP2H15 = struct
 	in lire_fichier_aux flux separateur
 
       (* trouver_selon_arrondissement : string -> activite list *)
-      method trouver_selon_arrondissement (na:string) = match liste_activites with
+      method trouver_selon_arrondissement (na:string) = 
+	match liste_activites with
 	| [] -> raise (failwith "Le systeme d'activites est vide")
 	| _  -> List.filter (fun x -> x#get_arrondissement = na) liste_activites
 
       (* trouver_selon_type : string -> activite list *)
-      method trouver_selon_type (ta:string) =  match liste_activites with
+      method trouver_selon_type (ta:string) = 
+	match liste_activites with
 	| [] -> raise (failwith "Le systeme d'activites est vide")
 	| _  ->  List.filter(fun x -> x#get_description_nat = ta) liste_activites
 
@@ -198,7 +200,6 @@ module Tp2h15 : TP2H15 = struct
 	match liste_activites with
         | [] -> failwith "Le systeme d'activites est vide"
         | _  -> List.uniques (List.map (fun x -> x#get_description_nat) liste_activites)
-
     end
 
   class sysactivites_gratuites (au:string) (od:string) =
@@ -210,7 +211,8 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      method ajouter_liste_activites (lla:string list list) =
+      method ajouter_liste_activites (lla:string list list) = 
+	List.iter (fun x -> self#ajouter_activite (new activite x true)) lla;
 
       (* charger_donnees_sysactivites : string -> unit *)
       method charger_donnees_sysactivites (fichier:string) =
@@ -235,10 +237,11 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      (*method ajouter_liste_activites (lla:string list list) =
+      method ajouter_liste_activites (lla:string list list) =
+	List.iter (fun x -> self#ajouter_activite (new activite x false)) lla;
 
       (* charger_donnees_sysactivites : string -> unit *)
-      method charger_donnees_sysactivites (fichier:string) =
+      (*method charger_donnees_sysactivites (fichier:string) =
 
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) = *)
