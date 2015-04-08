@@ -183,10 +183,12 @@ module Tp2h15 : TP2H15 = struct
 	| _  -> List.filter (fun x -> x#get_arrondissement = na) liste_activites
 
       (* trouver_selon_type : string -> activite list *)
-      (*method trouver_selon_type (ta:string) = 
+      method trouver_selon_type (ta:string) =  match liste_activites with
+	| [] -> raise (failwith "Le systeme d'activites est vide")
+	| _  ->  List.filter(fun x -> x#get_description_nat = ta) liste_activites
 
       (* lister_arrondissements : string list *)
-      method lister_arrondissements =
+      (*method lister_arrondissements =
       
       (* lister_types_activites : string list *)
       method lister_types_activites =*)
