@@ -5,13 +5,13 @@
 (* et payantes en utilisant les données ouvertes de la ville de Québec *)
 (***********************************************************************)
 (*                                                                     *)
-(* NOM: ___________________________ PRÉNOM:___________________________ *)
-(* MATRICULE: _____________________ PROGRAMME: _______________________ *)
+(* NOM: ________BOISBRAS____________ PRÉNOM:_________Titouan__________ *)
+(* MATRICULE: ___111_107_300_________ PROGRAMME: _________GLO_________ *)
 (*                                                                     *)
 (***********************************************************************)
 (*                                                                     *)
-(* NOM: ___________________________ PRÉNOM:___________________________ *)
-(* MATRICULE: _____________________ PROGRAMME: _______________________ *)
+(* NOM: _______GUIHO_______________ PRÉNOM:__________Ronan____________ *)
+(* MATRICULE: ___111_107_292_______ PROGRAMME: ___________GLO_________ *)
 (*                                                                     *)
 (***********************************************************************)
 
@@ -271,7 +271,7 @@ module Tp2h15 : TP2H15 = struct
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) =
 	let compare (o1:activite) (o2:activite) = self#comparer_activites o1 o2 ordre
-	in if ordre >= 1 && ordre <= 2
+	in if ordre >= 1 && ordre <= 3
 	   then self#set_liste_activites (List.sort compare self#get_liste_activites)
 	   else failwith "trier_activites: ordre incorrect!"
 
@@ -294,13 +294,13 @@ module Tp2h15 : TP2H15 = struct
 	| _  ->
         iter (fun x ->
           begin
-            output_string flux ("Description: " ^ x#get_description ^ ".");
-            output_string flux ("Type: " ^ x#get_description_nat ^ ".");
-            output_string flux ("Lieu: " ^ x#get_lieu_1 ^ ".");
-            output_string flux ("Adresse: " ^ x#get_adresse ^ ".");
-            output_string flux ("Arrondissement: " ^ x#get_arrondissement ^ ".");
-            output_string flux ("Dates: " ^ x#get_date_deb ^ " au " ^ x#get_date_fin ^ ".");
-            output_string flux ("Jour de la semaine: " ^ x#get_jour_semaine ^ ".");
+            output_string flux ("Description: " ^ x#get_description ^ ".\n");
+            output_string flux ("Type: " ^ x#get_description_nat ^ ".\n");
+            output_string flux ("Lieu: " ^ x#get_lieu_1 ^ ".\n");
+            output_string flux ("Adresse: " ^ x#get_adresse ^ ".\n");
+            output_string flux ("Arrondissement: " ^ x#get_arrondissement ^ ".\n");
+            output_string flux ("Dates: " ^ x#get_date_deb ^ " au " ^ x#get_date_fin ^ ".\n");
+            output_string flux ("Jour de la semaine: " ^ x#get_jour_semaine ^ ".\n");
             output_string flux ("Heures: " ^ x#get_heure_deb ^ " a " ^ x#get_heure_fin ^ ".\n");
             if (x#get_type_activite == false) then
               output_string flux ("Prix de l'activite:" ^ string_of_float(x#get_tarif_base) ^ ".\n");
@@ -318,12 +318,49 @@ module Tp2h15 : TP2H15 = struct
 	flush stdout;
 	let choix = int_of_string (input_line stdin) in
 	if (choix != 1 && choix != 2) then failwith "Nombre incorrect, veuillez recommencer!";
-	let filename = if choix = 1 then nom_fichier_agratuites else nom_fichier_payant in
-
-	print_string "Recherche dans un systeme d'activites gratuites utilisant les donnees ouvertes de la ville de Quebec.\n";
+	let filename = if choix = 1 then nom_fichier_agratuites else nom_fichier_apayantes in
+	let sa = if choix = 1 then new sysactivites_gratuites "systeme d'activites gratuites" "donnees ouvertes de la ville de Quebec" else new sysactivites_payantes "systeme d'activites payantes" "donnees ouvertes de la ville de Quebec" in
+	sa#charger_donnees_sysactivites filename;
 	print_string "Quel type (nature) d'activites vous interessent?\n";
-	
-
+	let liste_types = sa#lister_types_activites in
+	let nbt = List.length liste_types in
+	let liste_arrs = sa#lister_arrondissements in
+	let nba = List.length liste_arrs in
+	print_string (formater_chaine liste_types);
+	print_string ("Veuillez entrer un nombre entre 0 et " ^ string_of_int (nbt) ^ ":? ");
+	flush stdout;
+	let choix = int_of_string (input_line stdin) in
+	let lac = if (choix = nbt) then sa#get_liste_activites
+		  else
+                    if (choix >= 0 && choix < nbt)
+                    then sa#trouver_selon_type (List.nth liste_types choix)
+                    else failwith "Nombre incorrect, veuillez recommencer!" in
+	sa#set_liste_activites lac;
+	print_string "\nQuel arrondissement vous interesse?\n";
+	print_string (formater_chaine liste_arrs);
+	print_string ("Veuillez entrer un nombre entre 0 et " ^ string_of_int (nba) ^ ":? ");
+	flush stdout;
+	let choix = int_of_string (input_line stdin) in
+	let lar = if (choix = nba) then lac else
+                    if (choix >= 0 && choix < nba)
+                    then sa#trouver_selon_arrondissement (List.nth liste_arrs choix)
+		    else failwith "Nombre incorrect, veuillez recommencer!" in
+	sa#set_liste_activites lar;
+	sa#afficher_systeme_activites;
+	print_string "\nVoulez-vous sauvegarder le resultat de recherche?\n";
+	print_string "1- Dans un fichier 'Resultats.txt'.\n";
+	print_string "2- Non merci!.\n";
+        print_string "Veuillez choisir une option (1 ou 2):?";
+	flush stdout;
+	let choix = int_of_string (input_line stdin) in
+	if choix = 1 then
+	  let filep =  open_out "Resultats.txt" in
+	  self#sauvegarder_liste_activites sa#get_liste_activites filep;
+	  close_out filep;
+	  print_string "\nVeuillez consulter le fichier 'Resultats.txt' dans votre repertoire courant!\n"
+	else if choix != 2 then failwith "Nombre incorrect, veuillez recommencer!";
+	print_string "\nMerci est au revoir!\n\n"
+		     
       initializer self#lancer_systeme_activites
 
     end
