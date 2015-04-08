@@ -1,16 +1,16 @@
 (***********************************************************************)
 (* Langages de Programmation: IFT 3000 NRC 11775                       *)
-(* TP2 HIVER 2015. Date limite: Vendredi 24 avril à 17h                *) 
+(* TP2 HIVER 2015. Date limite: Vendredi 24 avril à 17h                *)
 (* Implanter un système permettant de chercher des activités gratuites *)
 (* et payantes en utilisant les données ouvertes de la ville de Québec *)
 (***********************************************************************)
 (*                                                                     *)
-(* NOM: ___________________________ PRÉNOM:___________________________ *) 
+(* NOM: ___________________________ PRÉNOM:___________________________ *)
 (* MATRICULE: _____________________ PROGRAMME: _______________________ *)
 (*                                                                     *)
 (***********************************************************************)
 (*                                                                     *)
-(* NOM: ___________________________ PRÉNOM:___________________________ *) 
+(* NOM: ___________________________ PRÉNOM:___________________________ *)
 (* MATRICULE: _____________________ PROGRAMME: _______________________ *)
 (*                                                                     *)
 (***********************************************************************)
@@ -21,9 +21,9 @@
 (* Charger la signature du système d'activités *)
 #use "TP2-SIG-H2015.mli";;
 
-(********************************************************************) 
+(********************************************************************)
 (* Implantation du système en utilisant                             *)
-(* la programmation orientée objet                       	    *) 
+(* la programmation orientée objet                       	    *)
 (********************************************************************)
 
 module Tp2h15 : TP2H15 = struct
@@ -41,7 +41,7 @@ module Tp2h15 : TP2H15 = struct
   (* enlever : 'a -> 'a list -> 'a list *)
   (* Enlever un élément dans une liste  *)
 
-  let enlever e l = 
+  let enlever e l =
     let (l1, l2) = partition (fun x -> x = e) l
     in l2
 
@@ -49,10 +49,10 @@ module Tp2h15 : TP2H15 = struct
   (* Remplacer un élément par un autre dans une liste *)
 
   let remplacer e e' l =
-    map (fun x -> (if (x = e) then e' else x)) l 
+    map (fun x -> (if (x = e) then e' else x)) l
 
   (* uniques : string list -> string list                         *)
-  (* Retourner une liste ne contenant que des éléments uniques    *) 
+  (* Retourner une liste ne contenant que des éléments uniques    *)
   (* Les chaînes vides sont également enlevées de la liste        *)
   (* ainsi que les espaces inutiles avant et/ou après les chaînes *)
 
@@ -71,7 +71,7 @@ module Tp2h15 : TP2H15 = struct
   (* formater_chaine : string list -> string                                  *)
   (* Construire une chaîne selon un certain formatage pour les besoins du TP  *)
 
-  let formater_chaine liste = 
+  let formater_chaine liste =
     let res = ref "" in
     let n = (length liste) - 1  in
       for i = 0 to n do
@@ -94,7 +94,7 @@ module Tp2h15 : TP2H15 = struct
 
   (* Classes du TP *)
 
-  class activite (lch:string list) (ta:bool) = 
+  class activite (lch:string list) (ta:bool) =
     object(self)
       val type_activite = ta
       val code_session : string = nth lch 0
@@ -126,7 +126,7 @@ module Tp2h15 : TP2H15 = struct
       method get_heure_fin = heure_fin
 
       (* Méthode à implanter *)
-      
+
       (* afficher_activite : unit *)
       method afficher_activite = begin
 	  print_endline ("Description: " ^ self#get_description ^ ".");
@@ -152,9 +152,9 @@ module Tp2h15 : TP2H15 = struct
       method retourner_nbr_activites = length liste_activites
 
       (* Méthodes à implanter *)
-      
+
       (* ajouter_activite : activite -> unit *)
-      method ajouter_activite (a:activite) = 
+      method ajouter_activite (a:activite) =
 	if self#activite_existe a then ()
 	else liste_activites <- (liste_activites @ [a])
 
@@ -178,13 +178,13 @@ module Tp2h15 : TP2H15 = struct
 	in lire_fichier_aux flux separateur
 
       (* trouver_selon_arrondissement : string -> activite list *)
-      method trouver_selon_arrondissement (na:string) = 
+      method trouver_selon_arrondissement (na:string) =
 	match liste_activites with
 	| [] -> raise (failwith "Le systeme d'activites est vide")
 	| _  -> List.filter (fun x -> x#get_arrondissement = na) liste_activites
 
       (* trouver_selon_type : string -> activite list *)
-      method trouver_selon_type (ta:string) = 
+      method trouver_selon_type (ta:string) =
 	match liste_activites with
 	| [] -> raise (failwith "Le systeme d'activites est vide")
 	| _  ->  List.filter(fun x -> x#get_description_nat = ta) liste_activites
@@ -192,7 +192,7 @@ module Tp2h15 : TP2H15 = struct
       (* lister_arrondissements : string list *)
       method lister_arrondissements =
 	match liste_activites with
-	| [] -> failwith "Le systeme d'activites est vide" 
+	| [] -> failwith "Le systeme d'activites est vide"
 	| _  -> List.uniques (List.map (fun x -> x#get_arrondissement) liste_activites)
 
       (* lister_types_activites : string list *)
@@ -211,7 +211,7 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      method ajouter_liste_activites (lla:string list list) = 
+      method ajouter_liste_activites (lla:string list list) =
 	List.iter (fun x -> self#ajouter_activite (new activite x true)) lla;
 
       (* charger_donnees_sysactivites : string -> unit *)
@@ -223,7 +223,7 @@ module Tp2h15 : TP2H15 = struct
       (* trier_activites : int -> unit *)
       (*method trier_activites (ordre:int) =*)
 
-      initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^ 
+      initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
 				print_newline()
     end
@@ -245,8 +245,8 @@ module Tp2h15 : TP2H15 = struct
 
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) = *)
- 
-      initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^ 
+
+      initializer print_string ("Recherche dans un " ^ (self#get_systeme_utilisees) ^
 				" utilisant les " ^ (parent#get_origine_donnees) ^ ".");
 				print_newline()
     end
@@ -258,10 +258,10 @@ module Tp2h15 : TP2H15 = struct
 
       (* Méthodes à implanter *)
 
-      (* sauvegarder_liste_activites : activite list -> out_channel -> unit *)      
+      (* sauvegarder_liste_activites : activite list -> out_channel -> unit *)
       (*method sauvegarder_liste_activites (la:activite list) (flux:out_channel) =*)
 
-      (* lancer_systeme_activites : unit *) 
+      (* lancer_systeme_activites : unit *)
       method lancer_systeme_activites = ()
 
       initializer self#lancer_systeme_activites
