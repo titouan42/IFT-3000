@@ -254,8 +254,11 @@ module Tp2h15 : TP2H15 = struct
 	List.iter (fun x -> self#ajouter_activite (new activite x false)) lla;
 
       (* charger_donnees_sysactivites : string -> unit *)
-      (*method charger_donnees_sysactivites (fichier:string) =*)
-
+      method charger_donnees_sysactivites (fichier:string) =
+	match (self#lire_fichier (open_in fichier) "|") with
+	| [] -> ()
+	| liste::reste -> self#ajouter_liste_activites reste
+						       
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) =
 	try 
