@@ -235,7 +235,6 @@ Heures: 10:30:00 a 11:25:00.
 
 sag#trier_activites selon_date_fin;;
 sag#afficher_systeme_activites;;
-
 (* Résultat:
 Description: Aquaforme.
 Type: Activites aquatiques.
