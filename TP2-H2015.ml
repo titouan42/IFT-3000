@@ -154,18 +154,21 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
       
       (* ajouter_activite : activite -> unit *)
-      method ajouter_activite (a:activite) = if self#activite_existe a
-					     then ()
-					     else self#set_liste_activites (self#get_liste_activites @ [a])
+      method ajouter_activite (a:activite) = 
+	if self#activite_existe then ()
+	else self#set_liste_activites (self#get_liste_activites @ [a])
 
       (* supprimer_activite : activite -> unit *)
       (*method supprimer_activite (a:activite) = *)
 
       (* afficher_systeme_activites : unit *)
-      (*method afficher_systeme_activites = 
-
+      method afficher_systeme_activites =
+	match liste_activites with
+	| [] -> failwith "Le systeme d'activites est vide"
+	| _ -> iter afficher_activite liste_activites
+	  
       (* lire_fichier : in_channel -> string -> string list list *)
-      method lire_fichier (flux:in_channel) (separateur:string) =
+      (*method lire_fichier (flux:in_channel) (separateur:string) =
 
       (* trouver_selon_arrondissement : string -> activite list *)
       method trouver_selon_arrondissement (na:string) =
