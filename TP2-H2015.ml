@@ -234,10 +234,11 @@ module Tp2h15 : TP2H15 = struct
       (* Méthodes à implanter *)
 
       (* ajouter_liste_activites : string list list -> unit *)
-      (*method ajouter_liste_activites (lla:string list list) =
+      method ajouter_liste_activites (lla:string list list) =
+	List.iter (fun x -> self#ajouter_activite (new activite x false)) lla;
 
       (* charger_donnees_sysactivites : string -> unit *)
-      method charger_donnees_sysactivites (fichier:string) =
+      (*method charger_donnees_sysactivites (fichier:string) =
 
       (* trier_activites : int -> unit *)
       method trier_activites (ordre:int) = *)
