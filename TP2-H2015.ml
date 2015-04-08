@@ -167,7 +167,7 @@ module Tp2h15 : TP2H15 = struct
       method afficher_systeme_activites =
         match liste_activites with
 	| [] -> failwith "Le systeme d'activites est vide"
-        | _ -> iter (fun x -> x#afficher_activite) liste_activites
+        | _  -> iter (fun x -> x#afficher_activite) liste_activites
 
       (* lire_fichier : in_channel -> string -> string list list *)
       method lire_fichier (flux:in_channel) (separateur:string) =
@@ -190,11 +190,16 @@ module Tp2h15 : TP2H15 = struct
 	| _  ->  List.filter(fun x -> x#get_description_nat = ta) liste_activites
 
       (* lister_arrondissements : string list *)
-      (*method lister_arrondissements =*) 
-      
+      method lister_arrondissements =
+	match liste_activites with
+	| [] -> failwith "Le systeme d'activites est vide" 
+	| _  -> uniques (map (fun x -> x#get_arrondissement) liste_activites)
+	  
       (* lister_types_activites : string list *)
-      (*method lister_types_activites =*)
-
+      method lister_types_activites =
+	match liste_activites with
+        | [] -> failwith "Le systeme d'activites est vide"
+        | _  -> uniques (map (fun x -> x#get_description_nat) liste_activites)
     end
 
   class sysactivites_gratuites (au:string) (od:string) =
