@@ -175,7 +175,9 @@ module Tp2h15 : TP2H15 = struct
 	in lire_fichier_aux flux separateur
 
       (* trouver_selon_arrondissement : string -> activite list *)
-      (*method trouver_selon_arrondissement (na:string) = match *)
+      method trouver_selon_arrondissement (na:string) = match liste_activites with
+	| [] -> raise (failwith "Le systeme d'activites est vide")
+	| _  -> List.filter (fun x -> x#get_arrondissement = na) liste_activites
 
       (* trouver_selon_type : string -> activite list *)
       (*method trouver_selon_type (ta:string) = 
