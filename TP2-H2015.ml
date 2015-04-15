@@ -316,10 +316,10 @@ module Tp2h15 : TP2H15 = struct
 	print_string "1- Activites gratuites.\n2- Activites payantes.\n";
 	print_string "Veuillez choisir une option (1 ou 2):?";
 	flush stdout;
-	let choix = int_of_string (input_line stdin) in
-	if (choix != 1 && choix != 2) then failwith "Nombre incorrect, veuillez recommencer!";
-	let filename = if choix = 1 then nom_fichier_agratuites else nom_fichier_apayantes in
-	let sa = if choix = 1 then new sysactivites_gratuites "systeme d'activites gratuites" "donnees ouvertes de la ville de Quebec" else new sysactivites_payantes "systeme d'activites payantes" "donnees ouvertes de la ville de Quebec" in
+	let choix0 = int_of_string (input_line stdin) in
+	if (choix0 != 1 && choix0 != 2) then failwith "Choix incorrect, veuillez recommencer!";
+	let filename = if choix0 = 1 then nom_fichier_agratuites else nom_fichier_apayantes in
+	let sa = if choix0 = 1 then new sysactivites_gratuites "systeme d'activites gratuites" "donnees ouvertes de la ville de Quebec" else new sysactivites_payantes "systeme d'activites payantes" "donnees ouvertes de la ville de Quebec" in
 	sa#charger_donnees_sysactivites filename;
 	print_string "Quel type (nature) d'activites vous interessent?\n";
 	let liste_types = sa#lister_types_activites in
@@ -334,7 +334,7 @@ module Tp2h15 : TP2H15 = struct
 		  else
                     if (choix >= 0 && choix < nbt)
                     then sa#trouver_selon_type (List.nth liste_types choix)
-                    else failwith "Nombre incorrect, veuillez recommencer!" in
+                    else failwith "Choix incorrect, veuillez recommencer!" in
 	sa#set_liste_activites lac;
 	print_string "\nQuel arrondissement vous interesse?\n";
 	print_string (formater_chaine liste_arrs);
@@ -344,9 +344,47 @@ module Tp2h15 : TP2H15 = struct
 	let lar = if (choix = nba) then lac else
                     if (choix >= 0 && choix < nba)
                     then sa#trouver_selon_arrondissement (List.nth liste_arrs choix)
-		    else failwith "Nombre incorrect, veuillez recommencer!" in
+		    else failwith "Choix incorrect, veuillez recommencer!" in
 	sa#set_liste_activites lar;
+
+	print_endline "\nVoici le resultat de la recherche:";
 	sa#afficher_systeme_activites;
+
+	print_endline ("\nNombre d'activites trouvees: " ^ (string_of_int sa#retourner_nbr_activites) ^ "\n");
+
+	print_endline "Voulez-vous trier le resultat de la recherche?";
+	print_endline "1- Selon la date et l'heure de debut.";
+	print_endline "2- Selon la date et l'heure de fin.";
+	if (choix0 = 1) then
+	  begin
+	    print_endline "3- Non, merci!.";
+	    print_string "Veuillez choisir une option (1 a 3):? ";
+	  end
+	else
+	  begin
+	    print_endline "3- Selon le tarif de base. ";
+	    print_endline "4- Non, merci!.";
+            print_string "Veuillez choisir une option (1 a 4):? ";
+	  end;
+	flush stdout;
+
+	let max = if choix0 = 1 then 3 else 4 in
+	let choix = int_of_string (input_line stdin) in
+	if (choix >= 1 && choix <= max) then
+	  begin
+	    if (choix0 = 1 && choix != 3) then
+	      begin
+		sa#trier_activites choix;
+		sa#afficher_systeme_activites;
+	      end;
+	    if (choix0 = 2 && choix != 4) then
+	      begin
+		sa#trier_activites choix;
+		sa#afficher_systeme_activites;
+	      end;
+	  end
+        else failwith "Choix incorrect, veuillez recommencer!";
+
 	print_string "\nVoulez-vous sauvegarder le resultat de recherche?\n";
 	print_string "1- Dans un fichier 'Resultats.txt'.\n";
 	print_string "2- Non merci!.\n";
@@ -358,7 +396,7 @@ module Tp2h15 : TP2H15 = struct
 	  self#sauvegarder_liste_activites sa#get_liste_activites filep;
 	  close_out filep;
 	  print_string "\nVeuillez consulter le fichier 'Resultats.txt' dans votre repertoire courant!\n"
-	else if choix != 2 then failwith "Nombre incorrect, veuillez recommencer!";
+	else if choix != 2 then failwith "Choix incorrect, veuillez recommencer!";
 	print_string "\nMerci est au revoir!\n\n"
 		     
       initializer self#lancer_systeme_activites
